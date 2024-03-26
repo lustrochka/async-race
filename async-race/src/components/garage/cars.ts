@@ -41,7 +41,7 @@ class Cars extends Component {
       const color = this.randomizeColor();
       const promise = setCar(name, color);
       promise.then((res) => {
-        this.appendChildren(new CarsItem(name, color, res.id));
+        this.appendChildren(new CarsItem(color, name, res.id));
       });
     }
     this.carsAmount += 100;

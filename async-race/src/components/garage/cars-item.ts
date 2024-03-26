@@ -1,6 +1,7 @@
 import Component from '../basic-components/component';
 import { div, span } from '../basic-components/tags';
 import Button from '../basic-components/button';
+import getDomElement from '../../utils/getDomElement';
 import { deleteCar, deleteWinner } from '../../api/api';
 
 class CarsItem extends Component {
@@ -8,7 +9,11 @@ class CarsItem extends Component {
     super(
       'div',
       'garage__item',
-      new Button('button', 'Select', {}),
+      new Button('button', 'Select', {}, () => {
+        getDomElement<HTMLInputElement>('.update-form .name-input').value = name;
+        getDomElement<HTMLInputElement>('.update-form .color-input').value = color;
+        localStorage.setItem('selected', `${id}`);
+      }),
       new Button('button', 'Remove', {}, () => {
         const promise = deleteCar(id);
         promise.then(() => {
@@ -19,7 +24,7 @@ class CarsItem extends Component {
       span('cars-item__title', `${name}`),
       div('', new Button('start-button', 'A', {}), new Button('stop-button', 'B', {}))
     );
-    this.addAttributes({ id: `${id}` });
+    this.addAttributes({ id: `item${id}` });
     this.appendChildren(this.createIcon(color));
   }
 

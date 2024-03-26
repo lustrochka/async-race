@@ -1,12 +1,21 @@
 import Component from '../basic-components/component';
 import { div, span } from '../basic-components/tags';
 import Button from '../basic-components/button';
+import { deleteCar, deleteWinner } from '../../api/api';
 
 class CarsItem extends Component {
   constructor(color: string, name: string, id: number) {
     super(
       'div',
       'garage__item',
+      new Button('button', 'Select', {}),
+      new Button('button', 'Remove', {}, () => {
+        const promise = deleteCar(id);
+        promise.then(() => {
+          this.destroy();
+          deleteWinner(id);
+        });
+      }),
       span('cars-item__title', `${name}`),
       div('', new Button('start-button', 'A', {}), new Button('stop-button', 'B', {}))
     );

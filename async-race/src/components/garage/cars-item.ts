@@ -3,13 +3,14 @@ import { div, span } from '../basic-components/tags';
 import Button from '../basic-components/button';
 
 class CarsItem extends Component {
-  constructor(color: string, name: string) {
+  constructor(color: string, name: string, id: number) {
     super(
       'div',
       'garage__item',
       span('cars-item__title', `${name}`),
       div('', new Button('start-button', 'A', {}), new Button('stop-button', 'B', {}))
     );
+    this.addAttributes({ id: `${id}` });
     this.appendChildren(this.createIcon(color));
   }
 

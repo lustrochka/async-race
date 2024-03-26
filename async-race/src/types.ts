@@ -2,27 +2,29 @@ export type Items = {
   [key: string]: string;
 };
 
-export interface CarResponse {
+export type CarResponse = {
   name: string;
   color: string;
   id: number;
-}
+};
 
-export interface GarageResponse {
+export type GarageResponse = {
   amount: string | null;
   cars: CarResponse[];
-}
+};
 
-export interface WinnerData {
+export type WinnerData = {
   [key: string]: number;
-}
+};
 
-export interface WinnersResponse {
+export type WinnersResponse = {
   amount: string | null;
   winners: WinnerData[];
-}
+};
 
 export interface WinnerResponse {
   status: boolean;
   data: WinnerData;
 }
+
+export type Callback = (name: string, color: string) => void;

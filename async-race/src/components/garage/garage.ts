@@ -3,8 +3,15 @@ import ManageBlock from './manageBlock';
 import Cars from './cars';
 
 class Garage extends Component {
+  carsBlock;
+
   constructor() {
-    super('div', 'garage', new ManageBlock(), new Cars());
+    super('div', 'garage');
+    this.carsBlock = new Cars();
+    this.appendChildren(
+      new ManageBlock((color: string, name: string) => this.carsBlock.createCar(color, name)),
+      this.carsBlock
+    );
   }
 }
 

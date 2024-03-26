@@ -9,7 +9,10 @@ class Garage extends Component {
     super('div', 'garage');
     this.carsBlock = new Cars();
     this.appendChildren(
-      new ManageBlock((color: string, name: string) => this.carsBlock.createCar(color, name)),
+      new ManageBlock(
+        (color: string, name: string) => this.carsBlock.createCar(color, name),
+        () => this.carsBlock.generateCars()
+      ),
       this.carsBlock
     );
   }

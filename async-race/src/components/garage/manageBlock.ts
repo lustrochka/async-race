@@ -5,9 +5,13 @@ import { div } from '../basic-components/tags';
 import { Callback } from '../../types';
 
 class ManageBlock extends Component {
-  constructor(callback: Callback) {
+  constructor(createCar: Callback, generateCars: () => void) {
     super('div', 'manage-block');
-    this.appendChildren(this.renderForm('Create', callback), this.renderForm('Update', this.updateCar));
+    this.appendChildren(
+      this.renderForm('Create', createCar),
+      this.renderForm('Update', this.updateCar),
+      new Button('generate-button', 'Generate cars', {}, generateCars)
+    );
   }
 
   renderForm(type: string, callback: Callback) {

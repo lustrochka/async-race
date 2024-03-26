@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Bugatti",
+    "model": ["Chiron", "Grand Sport", "Divo"]
+  },
+  {
+    "name": "Bentley",
+    "model": ["Continental", "Arnage", "Azure"]
+  },
+  {
+    "name": "BMW",
+    "model": ["Sedan", "Cabrio", "X4"]
+  },
+  {
+    "name": "Ferrari",
+    "model": ["F430", "Italia", "Spider"]
+  },
+  {
+    "name": "Fiat",
+    "model": ["Punto", "Panda", "Bravo"]
+  },
+  {
+    "name": "Hyundai",
+    "model": ["i10", "Sonata", "Solaris"]
+  },
+  {
+    "name": "Jaguar",
+    "model": ["X-Type", "Cabrio", "F-Pace"]
+  },
+  {
+    "name": "Jeep",
+    "model": ["Liberty", "Compass", "Wrangler"]
+  },
+  {
+    "name": "Toyota",
+    "model": ["Corolla", "Prius", "Auris"]
+  },
+  {
+    "name": "Volkswagen",
+    "model": ["Passat", "Golf R", "Tiguan"]
+  }
+]

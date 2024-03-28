@@ -1,0 +1,25 @@
+@keyframes move {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    transform: translateX(var(--my-distance));
+  }
+}
+
+.cars__item {
+  position: relative;
+  border-bottom: black 2px dashed;
+  margin-bottom: 10px;
+}
+
+.cars-item__car-icon {
+  width: 70px;
+}
+
+.cars-item__flag {
+  width: 20px;
+  position: absolute;
+  right: 50px;
+  bottom: 10px;
+}

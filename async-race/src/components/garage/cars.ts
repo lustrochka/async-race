@@ -6,19 +6,19 @@ import CarsItem from './cars-item';
 import names from '../../data/models.json';
 
 class Cars extends Component {
-  title;
+  #title;
 
-  carsAmount;
+  #carsAmount;
 
   constructor() {
     super('div', 'cars');
-    this.title = h3('garage__title', 'Garage');
-    this.carsAmount = 0;
-    this.appendChildren(this.title);
+    this.#title = h3('garage__title', 'Garage');
+    this.#carsAmount = 0;
+    this.appendChildren(this.#title);
     const promise = getCars(1);
     promise.then((res: GarageResponse) => {
-      this.carsAmount = Number(res.amount);
-      this.title.changeText(`Garage (${this.carsAmount})`);
+      this.#carsAmount = Number(res.amount);
+      this.#title.changeText(`Garage (${this.#carsAmount})`);
       for (let i = 0; i < res.cars.length; i++) {
         this.appendChildren(new CarsItem(res.cars[i].color, res.cars[i].name, i + 1));
       }
@@ -29,7 +29,7 @@ class Cars extends Component {
     const promise = setCar(name, color);
     promise.then((res: CarResponse) => {
       this.appendChildren(new CarsItem(name, color, res.id));
-      this.title.changeText(`Garage (${++this.carsAmount})`);
+      this.#title.changeText(`Garage (${++this.#carsAmount})`);
     });
   }
 
@@ -44,8 +44,8 @@ class Cars extends Component {
         this.appendChildren(new CarsItem(color, name, res.id));
       });
     }
-    this.carsAmount += 100;
-    this.title.changeText(`Garage(${this.carsAmount})`);
+    this.#carsAmount += 100;
+    this.#title.changeText(`Garage(${this.#carsAmount})`);
   }
 
   randomize(max: number): number {

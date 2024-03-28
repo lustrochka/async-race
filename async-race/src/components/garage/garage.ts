@@ -3,17 +3,17 @@ import ManageBlock from './manageBlock';
 import Cars from './cars';
 
 class Garage extends Component {
-  carsBlock;
+  #carsBlock;
 
   constructor() {
     super('div', 'garage');
-    this.carsBlock = new Cars();
+    this.#carsBlock = new Cars();
     this.appendChildren(
       new ManageBlock(
-        (color: string, name: string) => this.carsBlock.createCar(color, name),
-        () => this.carsBlock.generateCars()
+        (color: string, name: string) => this.#carsBlock.createCar(color, name),
+        () => this.#carsBlock.generateCars()
       ),
-      this.carsBlock
+      this.#carsBlock
     );
   }
 }

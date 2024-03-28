@@ -26,8 +26,8 @@ export const h3 = (className: string, text: string, ...children: Component[]) =>
   return element;
 };
 
-export const img = (className: string, src: string) => {
+export const img = (className: string, src: string, alt: string) => {
   const element = new Component('img', className);
-  element.addAttributes({ src });
+  element.addAttributes({ src, alt });
   return element;
 };

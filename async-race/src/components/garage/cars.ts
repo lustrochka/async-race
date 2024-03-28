@@ -20,7 +20,7 @@ class Cars extends Component {
       this.#carsAmount = Number(res.amount);
       this.#title.changeText(`Garage (${this.#carsAmount})`);
       for (let i = 0; i < res.cars.length; i++) {
-        this.appendChildren(new CarsItem(res.cars[i].color, res.cars[i].name, i + 1));
+        this.appendChildren(new CarsItem(res.cars[i].color, res.cars[i].name, res.cars[i].id));
       }
     });
   }

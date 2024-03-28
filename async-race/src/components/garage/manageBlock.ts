@@ -1,32 +1,42 @@
 import Component from '../basic-components/component';
-import Input from '../basic-components/input';
 import Button from '../basic-components/button';
 import CarsItem from './cars-item';
-import getDomElement from '../../utils/getDomElement';
+import Form from './form';
+import ModalWinner from './modalWinner';
+import { getDomElement, getDomElements } from '../../utils/getDomElement';
 import { div } from '../basic-components/tags';
 import { Callback } from '../../types';
-import { updateCar } from '../../api/api';
+import {
+  updateCar,
+  getCars,
+  startCarEngine,
+  drive,
+  stopCarEngine,
+  createWinner,
+  updateWinner,
+  getWinner,
+} from '../../api/api';
 
 class ManageBlock extends Component {
+  #raceBtn;
+
+  #resetBtn;
+
+  #modal;
+
   constructor(createCar: Callback, generateCars: () => void) {
     super('div', 'manage-block');
+    this.#raceBtn = new Button('manage-block__button', 'Race', { id: 'race-button' }, () => this.startRace());
+    this.#resetBtn = new Button('manage-block__button', 'Reset', { id: 'reset-button', disabled: 'true' }, () =>
+      this.stopRace()
+    );
     this.appendChildren(
-      this.renderForm('Create', createCar),
-      this.renderForm('Update', this.updateCar),
+      new Form('Create', createCar),
+      new Form('Update', this.updateCar),
+      div('race-buttons', this.#raceBtn, this.#resetBtn),
       new Button('generate-button', 'Generate cars', {}, generateCars)
     );
-  }
-
-  renderForm(type: string, callback: Callback) {
-    const form = div(`${type.toLowerCase()}-form`);
-    const nameInput = new Input('name-input', { type: 'text', name: 'name' });
-    const colorInput = new Input('color-input', { type: 'color', name: 'color' });
-    form.appendChildren(
-      nameInput,
-      colorInput,
-      new Button('button', type, { type: 'button' }, () => callback(nameInput.getValue(), colorInput.getValue()))
-    );
-    return form;
+    this.#modal = new ModalWinner();
   }
 
   updateCar(name: string, color: string) {
@@ -39,6 +49,93 @@ class ManageBlock extends Component {
         item.replaceWith(newItem.getNode());
       });
     }
+  }
+
+  async startRace() {
+    this.#raceBtn.addAttributes({ disabled: 'true' });
+    const startButtons = getDomElements('.start-button');
+    startButtons.forEach((button) => button.setAttribute('disabled', 'true'));
+
+    const stopButtons = getDomElements('.stop-button');
+    stopButtons.forEach((button) => button.removeAttribute('disabled'));
+
+    const allCarsResponse = await getCars(1);
+    const idArray = allCarsResponse.cars.map((el) => el.id);
+    const distance =
+      getDomElement('.cars-item__flag').getBoundingClientRect().x -
+      getDomElement('.cars-item__car-icon').getBoundingClientRect().x;
+    document.documentElement.style.setProperty('--my-distance', `${distance}px`);
+    const startEngineResponse = await Promise.allSettled(idArray.map(async (el) => startCarEngine(el)));
+
+    const garage = getDomElement('.cars');
+    garage.onanimationend = (e) => {
+      garage.onanimationend = null;
+      this.defineWinner(e);
+    };
+
+    startEngineResponse.forEach((response) => {
+      if (response.status === 'fulfilled') {
+        const id = idArray[startEngineResponse.indexOf(response)];
+        const time = response.value;
+        const carIcon = getDomElement(`#car${id}`);
+        carIcon.style.setProperty('animation', `${time}ms linear move forwards`);
+        carIcon.addEventListener('animationend', () => {
+          stopCarEngine(id);
+        });
+        drive(id).then((driveResponse) => {
+          if (!driveResponse) {
+            carIcon.style.setProperty('animation-play-state', 'paused');
+          }
+        });
+      }
+    });
+  }
+
+  defineWinner(event: Event) {
+    const { target } = event;
+    if (target instanceof HTMLElement) {
+      const time = parseInt(target.style.animationDuration, 10) / 1000;
+      const name = target.dataset.name || '';
+      const id = Number(target.id.slice(3));
+      this.setWinner(id, time);
+      this.#modal.show(name, time);
+    }
+    this.#resetBtn.deleteAttribute('disabled');
+  }
+
+  setWinner(id: number, bestTime: number) {
+    getWinner(id).then((response) => {
+      const { status } = response;
+      if (status) {
+        const { data } = response;
+        const winsAmount = data.wins + 1;
+
+        if (data.time < bestTime) {
+          bestTime = data.time;
+        }
+
+        updateWinner({ id, wins: winsAmount, time: bestTime });
+      } else {
+        const winsAmount = 1;
+        createWinner({ id, wins: winsAmount, time: bestTime });
+      }
+    });
+  }
+
+  stopRace() {
+    this.#modal.hide();
+    this.#raceBtn.deleteAttribute('disabled');
+    this.#resetBtn.addAttributes({ disabled: 'true' });
+    const startButtons = getDomElements('.start-button');
+    startButtons.forEach((button) => button.removeAttribute('disabled'));
+
+    const stopButtons = getDomElements('.stop-button');
+    stopButtons.forEach((button) => button.setAttribute('disabled', 'true'));
+
+    getDomElements('.cars-item__car-icon').forEach((icon) => {
+      icon.style.transition = '0ms';
+      icon.style.animation = 'none';
+    });
   }
 }
 

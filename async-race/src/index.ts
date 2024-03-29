@@ -1,4 +1,4 @@
-import Winners from './components/winners/winners';
+import Garage from './components/garage/garage';
 import './style.scss';
 
-document.body.appendChild(new Winners().getNode());
+document.body.appendChild(new Garage().getNode());

@@ -28,3 +28,10 @@ export interface WinnerResponse {
 }
 
 export type Callback = (name: string, color: string) => void;
+
+export type CarsItemArgs = {
+  color: string;
+  name: string;
+  id: number;
+  callback: () => void;
+};

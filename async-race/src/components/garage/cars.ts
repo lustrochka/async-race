@@ -3,33 +3,59 @@ import { getCars, setCar } from '../../api/api';
 import { GarageResponse, CarResponse } from '../../types';
 import { h3 } from '../basic-components/tags';
 import CarsItem from './cars-item';
+import { getDomElement } from '../../utils/getDomElement';
 import names from '../../data/models.json';
+
+const CARS_PER_PAGE = 7;
 
 class Cars extends Component {
   #title;
 
   #carsAmount;
 
-  constructor() {
+  #amountPerPage;
+
+  #changePage;
+
+  constructor(page: number, callback: () => void) {
     super('div', 'cars');
     this.#title = h3('garage__title', 'Garage');
     this.#carsAmount = 0;
+    this.#amountPerPage = 0;
+    this.#changePage = callback;
     this.appendChildren(this.#title);
-    const promise = getCars(1);
+    const promise = getCars(page);
     promise.then((res: GarageResponse) => {
       this.#carsAmount = Number(res.amount);
       this.#title.changeText(`Garage (${this.#carsAmount})`);
+      this.#amountPerPage = res.cars.length;
       for (let i = 0; i < res.cars.length; i++) {
-        this.appendChildren(new CarsItem(res.cars[i].color, res.cars[i].name, res.cars[i].id));
+        this.appendChildren(
+          new CarsItem({
+            color: res.cars[i].color,
+            name: res.cars[i].name,
+            id: res.cars[i].id,
+            callback: this.#changePage,
+          })
+        );
       }
     });
   }
 
-  createCar(color: string, name: string) {
+  getAmount() {
+    return this.#carsAmount;
+  }
+
+  createCar(name: string, color: string) {
     const promise = setCar(name, color);
     promise.then((res: CarResponse) => {
-      this.appendChildren(new CarsItem(name, color, res.id));
-      this.#title.changeText(`Garage (${++this.#carsAmount})`);
+      if (this.#amountPerPage < CARS_PER_PAGE) {
+        this.appendChildren(new CarsItem({ color, name, id: res.id, callback: this.#changePage }));
+        this.#title.changeText(`Garage (${++this.#carsAmount})`);
+        this.#amountPerPage++;
+      } else {
+        getDomElement('#next-button').removeAttribute('disabled');
+      }
     });
   }
 
@@ -41,11 +67,15 @@ class Cars extends Component {
       const color = this.randomizeColor();
       const promise = setCar(name, color);
       promise.then((res) => {
-        this.appendChildren(new CarsItem(color, name, res.id));
+        if (this.#amountPerPage < CARS_PER_PAGE) {
+          this.appendChildren(new CarsItem({ color, name, id: res.id, callback: this.#changePage }));
+          this.#amountPerPage++;
+        }
       });
     }
     this.#carsAmount += 100;
     this.#title.changeText(`Garage(${this.#carsAmount})`);
+    getDomElement('#next-button').removeAttribute('disabled');
   }
 
   randomize(max: number): number {

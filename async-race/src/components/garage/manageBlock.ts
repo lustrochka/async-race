@@ -24,7 +24,9 @@ class ManageBlock extends Component {
 
   #modal;
 
-  constructor(createCar: Callback, generateCars: () => void) {
+  #changePage;
+
+  constructor(createCar: Callback, generateCars: () => void, changePage: () => void) {
     super('div', 'manage-block');
     this.#raceBtn = new Button('manage-block__button', 'Race', { id: 'race-button' }, () => this.startRace());
     this.#resetBtn = new Button('manage-block__button', 'Reset', { id: 'reset-button', disabled: 'true' }, () =>
@@ -37,6 +39,7 @@ class ManageBlock extends Component {
       new Button('generate-button', 'Generate cars', {}, generateCars)
     );
     this.#modal = new ModalWinner();
+    this.#changePage = changePage;
   }
 
   updateCar(name: string, color: string) {
@@ -45,7 +48,7 @@ class ManageBlock extends Component {
       const promise = updateCar(Number(id), name, color);
       promise.then(() => {
         const item = getDomElement<HTMLDivElement>(`#item${id}`);
-        const newItem = new CarsItem(color, name, Number(id));
+        const newItem = new CarsItem({ color, name, id: Number(id), callback: this.#changePage });
         item.replaceWith(newItem.getNode());
       });
     }

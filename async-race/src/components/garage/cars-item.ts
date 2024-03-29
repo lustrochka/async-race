@@ -5,6 +5,7 @@ import { getDomElement } from '../../utils/getDomElement';
 import { deleteCar, deleteWinner, startCarEngine, stopCarEngine, drive } from '../../api/api';
 import flagSrc from '../../assets/flag.svg';
 import CarIcon from './carIcon';
+import { CarsItemArgs } from '../../types';
 
 class CarsItem extends Component {
   #id;
@@ -17,7 +18,7 @@ class CarsItem extends Component {
 
   #stopBtn;
 
-  constructor(color: string, name: string, id: number) {
+  constructor({ color, name, id, callback }: CarsItemArgs) {
     super(
       'div',
       'cars__item',
@@ -29,6 +30,7 @@ class CarsItem extends Component {
       new Button('button', 'Remove', {}, () => {
         deleteCar(id).then(() => {
           this.destroy();
+          callback();
           deleteWinner(id);
         });
       }),

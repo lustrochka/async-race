@@ -38,6 +38,7 @@ class Garage extends Component {
   }
 
   changePage() {
+    localStorage.setItem('page', `${this.#page}`);
     this.#prevButton.deleteAttribute('disabled');
     if (this.#page === 1) this.#prevButton.addAttributes({ disabled: 'true' });
     this.disableNextBtn();

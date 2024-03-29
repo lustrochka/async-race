@@ -55,6 +55,7 @@ class ManageBlock extends Component {
   }
 
   async startRace() {
+    const page = localStorage.getItem('page') || '1';
     this.#raceBtn.addAttributes({ disabled: 'true' });
     const startButtons = getDomElements('.start-button');
     startButtons.forEach((button) => button.setAttribute('disabled', 'true'));
@@ -62,8 +63,9 @@ class ManageBlock extends Component {
     const stopButtons = getDomElements('.stop-button');
     stopButtons.forEach((button) => button.removeAttribute('disabled'));
 
-    const allCarsResponse = await getCars(1);
+    const allCarsResponse = await getCars(Number(page));
     const idArray = allCarsResponse.cars.map((el) => el.id);
+    console.log(idArray);
     const distance =
       getDomElement('.cars-item__flag').getBoundingClientRect().x -
       getDomElement('.cars-item__car-icon').getBoundingClientRect().x;
@@ -79,6 +81,7 @@ class ManageBlock extends Component {
     startEngineResponse.forEach((response) => {
       if (response.status === 'fulfilled') {
         const id = idArray[startEngineResponse.indexOf(response)];
+        console.log(startEngineResponse);
         const time = response.value;
         const carIcon = getDomElement(`#car${id}`);
         carIcon.style.setProperty('animation', `${time}ms linear move forwards`);

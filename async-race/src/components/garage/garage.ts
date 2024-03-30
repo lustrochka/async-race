@@ -15,9 +15,9 @@ class Garage extends Component {
 
   constructor() {
     super('div', 'garage');
-    this.#page = 1;
+    this.#page = Number(localStorage.getItem('garage-page') || 1);
     this.#carsBlock = new Cars(this.#page, () => this.changePage());
-    this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button', disabled: 'true' }, () => {
+    this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button' }, () => {
       this.#page--;
       this.changePage();
     });
@@ -38,9 +38,8 @@ class Garage extends Component {
   }
 
   changePage() {
-    localStorage.setItem('page', `${this.#page}`);
+    localStorage.setItem('garage-page', `${this.#page}`);
     this.#prevButton.deleteAttribute('disabled');
-    if (this.#page === 1) this.#prevButton.addAttributes({ disabled: 'true' });
     this.disableNextBtn();
     const newCarsBlock = new Cars(this.#page, () => this.changePage());
     this.#carsBlock.getNode().replaceWith(newCarsBlock.getNode());
@@ -48,6 +47,7 @@ class Garage extends Component {
   }
 
   disableNextBtn() {
+    if (this.#page === 1) this.#prevButton.addAttributes({ disabled: 'true' });
     if (this.#page === Math.ceil(this.#carsBlock.getAmount() / 7)) {
       this.#nextButton.addAttributes({ disabled: 'true' });
     } else {

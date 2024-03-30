@@ -21,11 +21,11 @@ class Winners extends Component {
 
   constructor() {
     super('div', 'winners');
-    this.#page = 1;
+    this.#page = Number(localStorage.getItem('winners-page') || 1);
     this.#winnersAmount = 0;
     this.#title = div('winners__title');
     this.#winnersTable = new WinnersTable();
-    this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button', disabled: 'true' }, () => {
+    this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button' }, () => {
       this.#page--;
       this.changePage();
     });
@@ -46,12 +46,13 @@ class Winners extends Component {
   }
 
   changePage() {
+    localStorage.setItem('winners-page', `${this.#page}`);
     this.#prevButton.deleteAttribute('disabled');
-    if (this.#page === 1) this.#prevButton.addAttributes({ disabled: 'true' });
     this.getResponse();
   }
 
   disableNextBtn() {
+    if (this.#page === 1) this.#prevButton.addAttributes({ disabled: 'true' });
     if (this.#page === Math.ceil(this.#winnersAmount / WINNERS_PER_PAGE)) {
       this.#nextButton.addAttributes({ disabled: 'true' });
     } else {

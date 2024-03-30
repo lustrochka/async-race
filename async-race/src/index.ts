@@ -1,4 +1,4 @@
-import Garage from './components/garage/garage';
+import App from './components/app/app';
 import './style.scss';
 
-document.body.appendChild(new Garage().getNode());
+document.body.appendChild(new App().getNode());

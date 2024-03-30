@@ -50,6 +50,9 @@ class ManageBlock extends Component {
         const item = getDomElement<HTMLDivElement>(`#item${id}`);
         const newItem = new CarsItem({ color, name, id: Number(id), callback: this.#changePage });
         item.replaceWith(newItem.getNode());
+        localStorage.removeItem('selected');
+        localStorage.removeItem('update-name');
+        localStorage.removeItem('update-color');
       });
     }
   }

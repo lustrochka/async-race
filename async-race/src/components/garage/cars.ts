@@ -56,6 +56,8 @@ class Cars extends Component {
       } else {
         getDomElement('#next-button').removeAttribute('disabled');
       }
+      localStorage.removeItem('create-name');
+      localStorage.removeItem('create-color');
     });
   }
 

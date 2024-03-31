@@ -1,7 +1,7 @@
 import Component from '../basic-components/component';
 import { getCars, setCar } from '../../api/api';
 import { GarageResponse, CarResponse } from '../../types';
-import { h3 } from '../basic-components/tags';
+import { h2, h3 } from '../basic-components/tags';
 import CarsItem from './cars-item';
 import { getDomElement } from '../../utils/getDomElement';
 import names from '../../data/models.json';
@@ -19,11 +19,11 @@ class Cars extends Component {
 
   constructor(page: number, callback: () => void) {
     super('div', 'cars');
-    this.#title = h3('garage__title', 'Garage');
+    this.#title = h2('garage__title', 'Garage');
     this.#carsAmount = 0;
     this.#amountPerPage = 0;
     this.#changePage = callback;
-    this.appendChildren(this.#title);
+    this.appendChildren(this.#title, h3('page-title', `Page ${page}`));
     const promise = getCars(page);
     promise.then((res: GarageResponse) => {
       this.#carsAmount = Number(res.amount);

@@ -20,8 +20,14 @@ export const h1 = (className: string, text: string, ...children: Component[]) =>
   return element;
 };
 
+export const h2 = (className: string, text: string, ...children: Component[]) => {
+  const element = new Component('h2', className, ...children);
+  element.changeText(text);
+  return element;
+};
+
 export const h3 = (className: string, text: string, ...children: Component[]) => {
-  const element = new Component('h1', className, ...children);
+  const element = new Component('h3', className, ...children);
   element.changeText(text);
   return element;
 };

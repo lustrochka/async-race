@@ -1,5 +1,5 @@
 import Component from '../basic-components/component';
-import { div } from '../basic-components/tags';
+import { div, h2, h3 } from '../basic-components/tags';
 import { getWinners } from '../../api/api';
 import Button from '../basic-components/button';
 import WinnersTable from './winnersTable';
@@ -10,6 +10,8 @@ class Winners extends Component {
   #page;
 
   #title;
+
+  #pageTitle;
 
   #winnersAmount;
 
@@ -23,7 +25,8 @@ class Winners extends Component {
     super('div', 'winners');
     this.#page = Number(localStorage.getItem('winners-page') || 1);
     this.#winnersAmount = 0;
-    this.#title = div('winners__title');
+    this.#title = h2('winners__title', 'Winners');
+    this.#pageTitle = h3('winners__page-title', `Page ${this.#page}`);
     this.#winnersTable = new WinnersTable();
     this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button' }, () => {
       this.#page--;
@@ -41,6 +44,7 @@ class Winners extends Component {
     const winnersResponse = await getWinners(this.#page);
     this.#winnersAmount = Number(winnersResponse.amount);
     this.#title.changeText(`Winners(${this.#winnersAmount})`);
+    this.#pageTitle.changeText(`Page ${this.#page}`);
     this.#winnersTable.render(winnersResponse.winners);
     this.disableNextBtn();
   }

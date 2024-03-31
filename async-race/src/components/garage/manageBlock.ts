@@ -26,7 +26,9 @@ class ManageBlock extends Component {
 
   #changePage;
 
-  constructor(createCar: Callback, generateCars: () => void, changePage: () => void) {
+  #checkPageBtns;
+
+  constructor(createCar: Callback, generateCars: () => void, changePage: () => void, checkPageBtns: () => void) {
     super('div', 'manage-block');
     this.#raceBtn = new Button('manage-block__button', 'Race', { id: 'race-button' }, () => this.startRace());
     this.#resetBtn = new Button('manage-block__button', 'Reset', { id: 'reset-button', disabled: 'true' }, () =>
@@ -40,6 +42,7 @@ class ManageBlock extends Component {
     );
     this.#modal = new ModalWinner();
     this.#changePage = changePage;
+    this.#checkPageBtns = checkPageBtns;
   }
 
   updateCar(name: string, color: string) {
@@ -60,6 +63,9 @@ class ManageBlock extends Component {
   async startRace() {
     const page = localStorage.getItem('garage-page') || '1';
     this.#raceBtn.addAttributes({ disabled: 'true' });
+    getDomElement('#winners-button').setAttribute('disabled', 'true');
+    getDomElement('#prev-button').setAttribute('disabled', 'true');
+    getDomElement('#next-button').setAttribute('disabled', 'true');
     const startButtons = getDomElements('.start-button');
     startButtons.forEach((button) => button.setAttribute('disabled', 'true'));
 
@@ -108,6 +114,10 @@ class ManageBlock extends Component {
       this.#modal.show(name, time);
     }
     this.#resetBtn.deleteAttribute('disabled');
+    getDomElement('#winners-button').removeAttribute('disabled');
+    getDomElement('#prev-button').removeAttribute('disabled');
+    getDomElement('#next-button').removeAttribute('disabled');
+    this.#checkPageBtns();
   }
 
   setWinner(id: number, bestTime: number) {

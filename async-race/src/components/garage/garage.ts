@@ -3,6 +3,7 @@ import ManageBlock from './manageBlock';
 import Cars from './cars';
 import Button from '../basic-components/button';
 import { div } from '../basic-components/tags';
+import { getDomElement } from '../../utils/getDomElement';
 
 class Garage extends Component {
   #carsBlock;
@@ -29,7 +30,8 @@ class Garage extends Component {
       new ManageBlock(
         (color: string, name: string) => this.#carsBlock.createCar(color, name),
         () => this.#carsBlock.generateCars(),
-        () => this.changePage()
+        () => this.changePage(),
+        () => this.disableNextBtn()
       ),
       this.#carsBlock,
       div('page-buttons', this.#prevButton, this.#nextButton)
@@ -44,6 +46,9 @@ class Garage extends Component {
     const newCarsBlock = new Cars(this.#page, () => this.changePage());
     this.#carsBlock.getNode().replaceWith(newCarsBlock.getNode());
     this.#carsBlock = newCarsBlock;
+    getDomElement('#winners-button').removeAttribute('disabled');
+    getDomElement('#race-button').removeAttribute('disabled');
+    getDomElement('#reset-button').setAttribute('disabled', 'true');
   }
 
   disableNextBtn() {

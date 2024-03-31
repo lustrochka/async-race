@@ -19,7 +19,7 @@ class Cars extends Component {
 
   constructor(page: number, callback: () => void) {
     super('div', 'cars');
-    this.#title = h2('garage__title', 'Garage');
+    this.#title = h2('title', 'Garage');
     this.#carsAmount = 0;
     this.#amountPerPage = 0;
     this.#changePage = callback;

@@ -18,21 +18,21 @@ class Garage extends Component {
     super('div', 'garage');
     this.#page = Number(localStorage.getItem('garage-page') || 1);
     this.#carsBlock = new Cars(this.#page, () => this.changePage());
-    this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button' }, () => {
+    this.#prevButton = new Button('button', 'Prev', { id: 'prev-button' }, () => {
       this.#page--;
       this.changePage();
     });
-    this.#nextButton = new Button('page-button', 'Next', { id: 'next-button' }, () => {
+    this.#nextButton = new Button('button', 'Next', { id: 'next-button' }, () => {
       this.#page++;
       this.changePage();
     });
     this.appendChildren(
-      new ManageBlock(
-        (color: string, name: string) => this.#carsBlock.createCar(color, name),
-        () => this.#carsBlock.generateCars(),
-        () => this.changePage(),
-        () => this.disableNextBtn()
-      ),
+      new ManageBlock({
+        createCar: (color: string, name: string) => this.#carsBlock.createCar(color, name),
+        generateCars: () => this.#carsBlock.generateCars(),
+        changePage: () => this.changePage(),
+        checkPageBtns: () => this.disableNextBtn(),
+      }),
       this.#carsBlock,
       div('page-buttons', this.#prevButton, this.#nextButton)
     );

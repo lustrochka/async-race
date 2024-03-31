@@ -49,6 +49,7 @@ class WinnersTable extends Component {
   }
 
   changeSorting(value: string) {
+    const TEXT: { [key: string]: string } = { none: '', ASC: ' ⭡', DSC: ' ⭣' };
     if (value === 'wins') {
       this.#sortingValues.time = 'none';
       this.#sortingValues.wins === 'ASC' ? (this.#sortingValues.wins = 'DSC') : (this.#sortingValues.wins = 'ASC');
@@ -56,6 +57,8 @@ class WinnersTable extends Component {
       this.#sortingValues.wins = 'none';
       this.#sortingValues.time === 'ASC' ? (this.#sortingValues.time = 'DSC') : (this.#sortingValues.time = 'ASC');
     }
+    this.#winsButton.changeText(`Wins${TEXT[this.#sortingValues.wins]}`);
+    this.#timeButton.changeText(`Best time (seconds)${TEXT[this.#sortingValues.time]}`);
     this.sortingItems(value);
   }
 

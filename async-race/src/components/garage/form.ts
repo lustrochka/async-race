@@ -1,6 +1,8 @@
 import Component from '../basic-components/component';
 import Input from '../basic-components/input';
 import Button from '../basic-components/button';
+import CarIcon from './carIcon';
+import { getDomElement } from '../../utils/getDomElement';
 import { Callback } from '../../types';
 
 class Form extends Component {
@@ -15,6 +17,14 @@ class Form extends Component {
     });
     colorInput.setListener('input', () => {
       localStorage.setItem(`${type.toLowerCase()}-color`, `${colorInput.getValue()}`);
+      if (type === 'Update' && localStorage.getItem('selected')) {
+        const id = localStorage.getItem('selected');
+        const oldIcon = getDomElement(`#car${id}`);
+        const oldName = oldIcon.dataset.name;
+        const newIcon = new CarIcon(colorInput.getValue());
+        newIcon.addAttributes({ id: `car${id}`, 'data-name': `${oldName}` });
+        oldIcon.replaceWith(newIcon.getNode());
+      }
     });
     this.appendChildren(
       nameInput,

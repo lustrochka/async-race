@@ -25,18 +25,23 @@ class Winners extends Component {
     super('div', 'winners');
     this.#page = Number(localStorage.getItem('winners-page') || 1);
     this.#winnersAmount = 0;
-    this.#title = h2('winners__title', 'Winners');
-    this.#pageTitle = h3('winners__page-title', `Page ${this.#page}`);
+    this.#title = h2('title', 'Winners');
+    this.#pageTitle = h3('page-title', `Page ${this.#page}`);
     this.#winnersTable = new WinnersTable();
-    this.#prevButton = new Button('page-button', 'Prev', { id: 'prev-button' }, () => {
+    this.#prevButton = new Button('button', 'Prev', { id: 'prev-button' }, () => {
       this.#page--;
       this.changePage();
     });
-    this.#nextButton = new Button('page-button', 'Next', { id: 'next-button' }, () => {
+    this.#nextButton = new Button('button', 'Next', { id: 'next-button' }, () => {
       this.#page++;
       this.changePage();
     });
-    this.appendChildren(this.#winnersTable, div('page-buttons', this.#prevButton, this.#nextButton));
+    this.appendChildren(
+      this.#title,
+      this.#pageTitle,
+      this.#winnersTable,
+      div('page-buttons', this.#prevButton, this.#nextButton)
+    );
     this.getResponse();
   }
 

@@ -5,7 +5,7 @@ import Form from './form';
 import ModalWinner from './modalWinner';
 import { getDomElement, getDomElements } from '../../utils/getDomElement';
 import { div } from '../basic-components/tags';
-import { Callback } from '../../types';
+import { ManageBlockArgs } from '../../types';
 import {
   updateCar,
   getCars,
@@ -28,7 +28,7 @@ class ManageBlock extends Component {
 
   #checkPageBtns;
 
-  constructor(createCar: Callback, generateCars: () => void, changePage: () => void, checkPageBtns: () => void) {
+  constructor({ createCar, generateCars, changePage, checkPageBtns }: ManageBlockArgs) {
     super('div', 'manage-block');
     this.#raceBtn = new Button('manage-block__button', 'Race', { id: 'race-button' }, () => this.startRace());
     this.#resetBtn = new Button('manage-block__button', 'Reset', { id: 'reset-button', disabled: 'true' }, () =>

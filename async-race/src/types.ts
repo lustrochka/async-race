@@ -35,3 +35,10 @@ export type CarsItemArgs = {
   id: number;
   callback: () => void;
 };
+
+export type ManageBlockArgs = {
+  createCar: Callback;
+  generateCars: () => void;
+  changePage: () => void;
+  checkPageBtns: () => void;
+};

@@ -22,11 +22,7 @@ class CarsItem extends Component {
     super(
       'div',
       'cars__item',
-      new Button('button', 'Select', {}, () => {
-        getDomElement<HTMLInputElement>('.update-form .name-input').value = name;
-        getDomElement<HTMLInputElement>('.update-form .color-input').value = color;
-        localStorage.setItem('selected', `${id}`);
-      }),
+      new Button('button', 'Select', {}, () => this.selectCar(id, name, color)),
       new Button('button', 'Remove', {}, () => {
         deleteCar(id).then(() => {
           this.destroy();
@@ -44,6 +40,23 @@ class CarsItem extends Component {
     this.addAttributes({ id: `item${id}` });
     this.#carIcon.addAttributes({ id: `car${id}`, 'data-name': `${name}` });
     this.appendChildren(div('', this.#startBtn, this.#stopBtn), this.#carIcon, this.#flagIcon);
+  }
+
+  selectCar(id: number, name: string, color: string) {
+    const oldSelected = localStorage.getItem('selected');
+    if (oldSelected && Number(oldSelected) !== id) {
+      const carIcon = getDomElement(`#car${oldSelected}`);
+      const oldColor = localStorage.getItem('old-color') || '';
+      console.log(oldColor);
+      const oldName = carIcon.dataset.name;
+      const newIcon = new CarIcon(oldColor);
+      newIcon.addAttributes({ id: `car${id}`, 'data-name': `${oldName}` });
+      carIcon.replaceWith(newIcon.getNode());
+    }
+    getDomElement<HTMLInputElement>('.update-form .name-input').value = name;
+    getDomElement<HTMLInputElement>('.update-form .color-input').value = color;
+    localStorage.setItem('selected', `${id}`);
+    localStorage.setItem('old-color', `${color}`);
   }
 
   moveCar() {

@@ -6,14 +6,14 @@ import { span } from '../basic-components/tags';
 
 class WinnerItem extends Component {
   constructor(data: WinnerData, num: number) {
-    super('div', 'winners__table__item', span('', `${num}`));
+    super('div', 'winners__table__item', span('item-number', `${num}`));
     const { carIcon, itemName } = this.render(data.id);
-    this.appendChildren(carIcon, itemName, span('', `${data.wins}`), span('', `${data.time}`));
+    this.appendChildren(carIcon, itemName, span('item-wins', `${data.wins}`), span('', `${data.time}`));
   }
 
   render(id: number) {
     const carIcon = span('', '');
-    const itemName = span('', '');
+    const itemName = span('item-name', '');
     getCar(id).then((response) => {
       carIcon.appendChildren(new CarIcon(response.color));
       itemName.changeText(response.name);

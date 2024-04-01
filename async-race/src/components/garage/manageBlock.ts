@@ -30,15 +30,13 @@ class ManageBlock extends Component {
 
   constructor({ createCar, generateCars, changePage, checkPageBtns }: ManageBlockArgs) {
     super('div', 'manage-block');
-    this.#raceBtn = new Button('manage-block__button', 'Race', { id: 'race-button' }, () => this.startRace());
-    this.#resetBtn = new Button('manage-block__button', 'Reset', { id: 'reset-button', disabled: 'true' }, () =>
-      this.stopRace()
-    );
+    this.#raceBtn = new Button('button', 'Race', { id: 'race-button' }, () => this.startRace());
+    this.#resetBtn = new Button('button', 'Reset', { id: 'reset-button', disabled: 'true' }, () => this.stopRace());
     this.appendChildren(
       new Form('Create', createCar),
       new Form('Update', this.updateCar),
       div('race-buttons', this.#raceBtn, this.#resetBtn),
-      new Button('generate-button', 'Generate cars', {}, generateCars)
+      new Button('button', 'Generate cars', { id: 'generate-button' }, generateCars)
     );
     this.#modal = new ModalWinner();
     this.#changePage = changePage;
@@ -112,6 +110,7 @@ class ManageBlock extends Component {
       const id = Number(target.id.slice(3));
       this.setWinner(id, time);
       this.#modal.show(name, time);
+      this.#modal.setListener('click', () => this.#modal.hide());
     }
     this.#resetBtn.deleteAttribute('disabled');
     getDomElement('#winners-button').removeAttribute('disabled');
@@ -140,7 +139,6 @@ class ManageBlock extends Component {
   }
 
   stopRace() {
-    this.#modal.hide();
     this.#raceBtn.deleteAttribute('disabled');
     this.#resetBtn.addAttributes({ disabled: 'true' });
     const startButtons = getDomElements('.start-button');

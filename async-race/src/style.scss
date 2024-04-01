@@ -7,6 +7,28 @@
   }
 }
 
+body {
+  margin: 0;
+}
+
+.app {
+  padding: 10px;
+}
+
+.button,
+.name-input,
+.color-input {
+  margin: 5px 5px 5px 0;
+}
+
+.color-input {
+  vertical-align: middle;
+}
+
+.start-button {
+  margin-right: 5px;
+}
+
 .cars__item {
   position: relative;
   border-bottom: black 2px dashed;
@@ -15,16 +37,72 @@
 
 .cars-item__car-icon {
   width: 70px;
+  margin-top: 10px;
 }
 
 .cars-item__flag {
   width: 20px;
   position: absolute;
-  right: 50px;
+  right: 120px;
   bottom: 10px;
 }
 
 .winners__table__item {
   display: flex;
+  align-items: center;
   gap: 10px;
+}
+
+.winners__header {
+  margin-bottom: 10px;
+  width: 450px;
+  border: 2px solid blue
+}
+
+.header-car {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+}
+
+.header-name {
+  display: inline-block;
+  width: 80px;
+}
+
+.header-wins {
+  display: inline-block;
+  width: 50px;
+}
+
+.item-number {
+  width: 50px;
+  text-align: center;
+}
+
+.item-name {
+  width: 80px;
+  margin-left: 10px;
+}
+
+.item-wins {
+  width: 50px;
+}
+
+.modal {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  left: -10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: center;
+}
+
+.modal__text {
+  font-size: 20px;
+  text-shadow: 2px 2px 5px rgb(245 7 7);
 }

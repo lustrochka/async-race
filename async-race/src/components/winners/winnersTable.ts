@@ -20,15 +20,15 @@ class WinnersTable extends Component {
     super('div', 'winners__table');
     this.#data = [];
     this.#sortingValues = { wins: 'none', time: 'none' };
-    this.#winsButton = span('', 'Wins');
+    this.#winsButton = span('header-wins', 'Wins');
     this.#winsButton.setListener('click', () => this.changeSorting('wins'));
     this.#timeButton = span('', 'Best time (seconds)');
     this.#timeButton.setListener('click', () => this.changeSorting('time'));
     this.#header = div(
       'winners__header',
       span('', 'Number'),
-      span('', 'Car'),
-      span('', 'Name'),
+      span('header-car', 'Car'),
+      span('header-name', 'Name'),
       this.#winsButton,
       this.#timeButton
     );

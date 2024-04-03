@@ -110,7 +110,9 @@ class ManageBlock extends Component {
       const id = Number(target.id.slice(3));
       this.setWinner(id, time);
       this.#modal.show(name, time);
-      this.#modal.setListener('click', () => this.#modal.hide());
+      this.#modal.setListener('click', () => {
+        this.#modal.hide();
+      });
     }
     this.#resetBtn.deleteAttribute('disabled');
     getDomElement('#winners-button').removeAttribute('disabled');

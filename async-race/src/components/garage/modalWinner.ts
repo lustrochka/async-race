@@ -13,6 +13,7 @@ class ModalWinner extends Component {
   }
 
   hide() {
+    this.clear();
     this.destroy();
   }
 }

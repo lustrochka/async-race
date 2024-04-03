@@ -10,8 +10,18 @@ class Form extends Component {
     super('div', `${type.toLowerCase()}-form`);
     const name = localStorage.getItem(`${type.toLowerCase()}-name`) || '';
     const color = localStorage.getItem(`${type.toLowerCase()}-color`) || '#000000';
-    const nameInput = new Input('name-input', { type: 'text', name: 'name', value: name });
-    const colorInput = new Input('color-input', { type: 'color', name: 'color', value: color });
+    const nameInput = new Input('name-input', {
+      type: 'text',
+      name: 'name',
+      value: name,
+      id: `${type.toLowerCase()}-name`,
+    });
+    const colorInput = new Input('color-input', {
+      type: 'color',
+      name: 'color',
+      value: color,
+      id: `${type.toLowerCase()}-color`,
+    });
     const button = new Button('button', type, { type: 'button' }, () =>
       callback(nameInput.getValue(), colorInput.getValue())
     );

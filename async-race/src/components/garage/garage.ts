@@ -46,6 +46,12 @@ class Garage extends Component {
     const newCarsBlock = new Cars(this.#page, () => this.changePage());
     this.#carsBlock.getNode().replaceWith(newCarsBlock.getNode());
     this.#carsBlock = newCarsBlock;
+    localStorage.removeItem('selected');
+    localStorage.removeItem('update-name');
+    localStorage.removeItem('update-color');
+    localStorage.removeItem('old-color');
+    getDomElement<HTMLInputElement>('#update-name').value = '';
+    getDomElement<HTMLInputElement>('#update-color').value = '#000000';
     getDomElement('#winners-button').removeAttribute('disabled');
     getDomElement('#race-button').removeAttribute('disabled');
     getDomElement('#reset-button').setAttribute('disabled', 'true');

@@ -24,11 +24,11 @@ class ManageBlock extends Component {
 
   #modal;
 
-  #changePage;
+  changePage;
 
   #checkPageBtns;
 
-  constructor({ createCar, generateCars, changePage, checkPageBtns }: ManageBlockArgs) {
+  constructor({ createCar, generateCars, change, checkPageBtns }: ManageBlockArgs) {
     super('div', 'manage-block');
     this.#raceBtn = new Button('button', 'Race', { id: 'race-button' }, () => this.startRace());
     this.#resetBtn = new Button('button', 'Reset', { id: 'reset-button', disabled: 'true' }, () => this.stopRace());
@@ -39,7 +39,7 @@ class ManageBlock extends Component {
       new Button('button', 'Generate cars', { id: 'generate-button' }, generateCars)
     );
     this.#modal = new ModalWinner();
-    this.#changePage = changePage;
+    this.changePage = change;
     this.#checkPageBtns = checkPageBtns;
   }
 
@@ -49,7 +49,7 @@ class ManageBlock extends Component {
       const promise = updateCar(Number(id), name, color);
       promise.then(() => {
         const item = getDomElement<HTMLDivElement>(`#item${id}`);
-        const newItem = new CarsItem({ color, name, id: Number(id), callback: this.#changePage });
+        const newItem = new CarsItem({ color, name, id: Number(id), callback: () => this.changePage() });
         item.replaceWith(newItem.getNode());
         localStorage.removeItem('selected');
         localStorage.removeItem('update-name');

@@ -30,7 +30,7 @@ class Garage extends Component {
       new ManageBlock({
         createCar: (color: string, name: string) => this.#carsBlock.createCar(color, name),
         generateCars: () => this.#carsBlock.generateCars(),
-        changePage: () => this.changePage(),
+        change: () => this.changePage(),
         checkPageBtns: () => this.disableNextBtn(),
       }),
       this.#carsBlock,

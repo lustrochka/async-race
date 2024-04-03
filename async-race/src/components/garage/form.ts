@@ -12,6 +12,13 @@ class Form extends Component {
     const color = localStorage.getItem(`${type.toLowerCase()}-color`) || '#000000';
     const nameInput = new Input('name-input', { type: 'text', name: 'name', value: name });
     const colorInput = new Input('color-input', { type: 'color', name: 'color', value: color });
+    const button = new Button('button', type, { type: 'button' }, () =>
+      callback(nameInput.getValue(), colorInput.getValue())
+    );
+    button.setListener('click', () => {
+      nameInput.getNode().value = '';
+      colorInput.getNode().value = '#000000';
+    });
     nameInput.setListener('input', () => {
       localStorage.setItem(`${type.toLowerCase()}-name`, `${nameInput.getValue()}`);
     });
@@ -26,11 +33,7 @@ class Form extends Component {
         oldIcon.replaceWith(newIcon.getNode());
       }
     });
-    this.appendChildren(
-      nameInput,
-      colorInput,
-      new Button('button', type, { type: 'button' }, () => callback(nameInput.getValue(), colorInput.getValue()))
-    );
+    this.appendChildren(nameInput, colorInput, button);
   }
 }
 

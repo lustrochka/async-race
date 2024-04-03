@@ -47,10 +47,9 @@ class CarsItem extends Component {
     if (oldSelected && Number(oldSelected) !== id) {
       const carIcon = getDomElement(`#car${oldSelected}`);
       const oldColor = localStorage.getItem('old-color') || '';
-      console.log(oldColor);
       const oldName = carIcon.dataset.name;
       const newIcon = new CarIcon(oldColor);
-      newIcon.addAttributes({ id: `car${id}`, 'data-name': `${oldName}` });
+      newIcon.addAttributes({ id: `car${oldSelected}`, 'data-name': `${oldName}` });
       carIcon.replaceWith(newIcon.getNode());
     }
     getDomElement<HTMLInputElement>('.update-form .name-input').value = name;
